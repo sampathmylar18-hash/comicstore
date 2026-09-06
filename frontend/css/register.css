@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================================================================
+   REGISTER — "Panel Two"
+   Same comic-book / pop-art system as login. "First Appearance" is a
+   real comics term for a character's debut issue — used here as the
+   sticker tag, since this is where a new reader is created.
+   ========================================================================= */
+
+:root {
+  --paper: #f7f1e3;
+  --panel: #ffffff;
+  --ink: #16151c;
+  --ink-soft: #5a5762;
+  --pow-red: #ef4136;
+  --pop-blue: #2455d9;
+  --burst-yellow: #ffce3d;
+
+  --font-display: "Bangers", cursive;
+  --font-label: "Archivo Black", sans-serif;
+  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* halftone / Ben-Day dot backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 1px, transparent 1.5px);
+  background-size: 10px 10px;
+  opacity: 0.06;
+}
+
+/* ---------------------------------------------------------------------
+   h1
+   ------------------------------------------------------------------ */
+
+h1 {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 3rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: 3px 3px 0 var(--pop-blue);
+  text-align: left;
+  line-height: 1;
+}
+
+h1::before {
+  content: "FIRST APPEARANCE";
+  display: inline-block;
+  background: var(--burst-yellow);
+  border: 2.5px solid var(--ink);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-label);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: none;
+  transform: rotate(3deg);
+  box-shadow: 3px 3px 0 var(--ink);
+  margin-bottom: 1rem;
+}
+
+/* ---------------------------------------------------------------------
+   #register-form — the panel
+   ------------------------------------------------------------------ */
+
+#register-form {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  margin-top: 2rem;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+#register-form::after {
+  content: "PANEL 01";
+  position: absolute;
+  top: -14px;
+  right: 20px;
+  background: var(--pow-red);
+  color: #fff;
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border: 2px solid var(--ink);
+  transform: rotate(-4deg);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+/* inputs */
+#register-form input {
+  width: 100%;
+  padding: 0.85rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#register-form input::placeholder {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+#register-form input:hover {
+  background: #fffdf6;
+}
+
+#register-form input:focus {
+  background: var(--panel);
+  border-color: var(--pop-blue);
+  box-shadow: 4px 4px 0 var(--pop-blue);
+}
+
+#register-form input:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* button */
+#register-form button {
+  margin-top: 0.5rem;
+  padding: 0.95rem 1rem;
+  background: var(--pow-red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#register-form button::after {
+  content: "  \2192"; /* arrow */
+}
+
+#register-form button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+#register-form button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+#register-form button:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   login link
+   ------------------------------------------------------------------ */
+
+p {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  margin: 1.5rem auto 0;
+  text-align: left;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+p a {
+  color: var(--pop-blue);
+  text-decoration: none;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+p a:hover,
+p a:focus-visible {
+  color: var(--pow-red);
+  border-color: var(--pow-red);
+}
+
+p a:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Toast
+   ------------------------------------------------------------------ */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--panel);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-left-width: 6px;
+  padding: 14px 20px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--ink);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+.toast.success {
+  border-left-color: var(--pop-blue);
+}
+
+.toast.error {
+  border-left-color: var(--pow-red);
+}
+
+.toast.success::before {
+  content: "\2713";
+  color: var(--pop-blue);
+  font-family: var(--font-body);
+}
+
+.toast.error::before {
+  content: "\2715";
+  color: var(--pow-red);
+  font-family: var(--font-body);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 420px) {
+  #register-form {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  h1 {
+    font-size: 2.4rem;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+   
+    <title>Bookstore</title>
+</head>
+<body>
+    <header>
+        <h1>Sammyy's Bookstore</h1>
+         <input type="text" id="search-input" placeholder="Search books by title...">
+         <nav>
+            <span id ="username"></span>
+            <a href="cart.html">View Cart</a>
+            <button id="user-drawer-btn">
+            <img src="https://res.cloudinary.com/vjbus78l/image/upload/v1785304587/three-dots-vertical_sy1oie.svg">
+            </button>
+           </nav>
+
+    </header>
+
+    <main>
+        <div id="drawer-overlay"></div>
+
+        <div class="featured-wrapper">
+            <h2 class="section-title">Featured Comics</h2>
+            <div id="featured-books"></div>
+        </div>
+        <h2 class="section-title">All Books</h2>
+        <div id="book-list"></div>
+        <div id ="pagination"></div>
+    </main>
+    <script src="js/utils.js"></script>
+    <script src="js/books.js"></script>
+    <script src="js/auth.js"></script>
+   
+      <div id="user-drawer">
+    <button id="close-drawer-btn">Close</button>
+    <a href="login.html" id="drawer-login">Login</a>
+    <a href="orders.html">My Orders</a>
+    <a href="admin.html" id="admin-link" style="display:none;">Admin Panel</a>
+    <a href="#" id="drawer-logout" onclick="logout()" style="display:none;">Logout</a>
+    </div>
+
+<script>
+    if (localStorage.getItem('token')) {
+        document.getElementById('drawer-login').style.display = 'none';
+        document.getElementById('drawer-logout').style.display = 'block';
+    }
+    if (localStorage.getItem('role')?.trim() === 'admin') {
+        document.getElementById('admin-link').style.display = 'block';
+    }
+</script>
+
+  
+
+<script>
+        const drawer = document.getElementById('user-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+        const openBtn = document.getElementById('user-drawer-btn');
+        const closeBtn = document.getElementById('close-drawer-btn');
+
+        openBtn.addEventListener('click', () => {
+            drawer.classList.add('open');
+            overlay.classList.add('open');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+
+        overlay.addEventListener('click', () => {
+            drawer.classList.remove('open');
+            overlay.classList.remove('open');
+        });
+</script>
+</body>
+</html>

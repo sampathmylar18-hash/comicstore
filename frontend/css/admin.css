@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --paper: #f7f1e3;
+  --panel: #ffffff;
+  --ink: #16151c;
+  --ink-soft: #5a5762;
+  --pow-red: #ef4136;
+  --pop-blue: #2455d9;
+  --burst-yellow: #ffce3d;
+
+  --font-display: "Bangers", cursive;
+  --font-label: "Archivo Black", sans-serif;
+  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  padding: 2.5rem 3rem;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  text-shadow: 3px 3px 0 var(--pow-red);
+  margin: 0 0 1rem;
+}
+
+h2 {
+  font-family: var(--font-label);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 0.5rem;
+  margin: 2.5rem 0 1.2rem;
+}
+
+a {
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------------
+   Add/Edit Book form
+   ------------------------------------------------------------------ */
+
+#add-book-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.9rem;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 1.5rem;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+#add-book-form input,
+#add-book-form textarea {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+}
+
+#add-book-form input:focus,
+#add-book-form textarea:focus {
+  border-color: var(--pop-blue);
+}
+
+#add-book-form textarea {
+  grid-column: 1 / -1;
+  min-height: 80px;
+  resize: vertical;
+}
+
+#add-book-form button[type="submit"] {
+  grid-column: 1 / -1;
+  justify-self: start;
+  background: var(--pop-blue);
+  color: #fff;
+  border: 3px solid var(--ink);
+  padding: 0.7rem 1.4rem;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#add-book-form button[type="submit"]:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+#add-book-form button[type="submit"]:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* ---------------------------------------------------------------------
+   Book management list — table-like rows, not cards
+   ------------------------------------------------------------------ */
+
+#admin-book-list {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid var(--ink);
+  background: var(--panel);
+}
+
+.admin-book-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.admin-book-item:last-child {
+  border-bottom: none;
+}
+
+.admin-book-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-book-item button {
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.9rem;
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  background: var(--panel);
+  color: var(--ink);
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.admin-book-item button:first-of-type:hover {
+  background: var(--burst-yellow);
+}
+
+.admin-book-item button:last-of-type:hover {
+  background: var(--pow-red);
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------------
+   Spinner (loading state)
+   ------------------------------------------------------------------ */
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 4px solid var(--paper);
+  border-top: 4px solid var(--ink);
+  border-right: 4px solid var(--pow-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  body {
+    padding: 1.5rem;
+  }
+
+  #add-book-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-book-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 1.2rem;
+    border-bottom: 2px solid var(--ink);
+  }
+}
+#add-book-form label {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+#add-book-form input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--pop-blue);
+  cursor: pointer;
+}
+/* ---------------------------------------------------------------------
+   Toast
+   ------------------------------------------------------------------ */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--panel);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-left-width: 6px;
+  padding: 14px 20px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--ink);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+.toast.success {
+  border-left-color: var(--pop-blue);
+}
+
+.toast.error {
+  border-left-color: var(--pow-red);
+}
+
+.toast.success::before {
+  content: "\2713";
+  color: var(--pop-blue);
+  font-family: var(--font-body);
+}
+
+.toast.error::before {
+  content: "\2715";
+  color: var(--pow-red);
+  font-family: var(--font-body);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    transition: none !important;
+  }
+}

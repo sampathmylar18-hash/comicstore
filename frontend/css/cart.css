@@ -1,0 +1,533 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================================================================
+   CART — "To Be Continued..."
+   Same comic-book / pop-art system as login/register/otp. Each line
+   item reads as a panel torn from the strip; the total is a bold
+   call-out box; checkout is the big punch at the bottom of the page.
+   ========================================================================= */
+
+:root {
+  --paper: #f7f1e3;
+  --panel: #ffffff;
+  --ink: #16151c;
+  --ink-soft: #5a5762;
+  --pow-red: #ef4136;
+  --pop-blue: #2455d9;
+  --burst-yellow: #ffce3d;
+
+  --font-display: "Bangers", cursive;
+  --font-label: "Archivo Black", sans-serif;
+  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* halftone / Ben-Day dot backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 1px, transparent 1.5px);
+  background-size: 10px 10px;
+  opacity: 0.06;
+}
+
+header,
+main {
+  position: relative;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------------
+   Header — shout-line title with a "TO BE CONTINUED..." sticker tag,
+   plus a bold comic button back to the store
+   ------------------------------------------------------------------ */
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-lg) var(--space-md);
+  border-bottom: 3px solid var(--ink);
+}
+
+header h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 3px 3px 0 var(--pow-red);
+}
+
+header h1::before {
+  content: "TO BE CONTINUED...";
+  display: block;
+  background: var(--burst-yellow);
+  border: 2.5px solid var(--ink);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: none;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 var(--ink);
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
+
+header a {
+  display: inline-block;
+  background: var(--pop-blue);
+  color: #fff;
+  border: 3px solid var(--ink);
+  padding: 0.65rem 1.3rem;
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+header a::before {
+  content: "\2190  "; /* left arrow */
+}
+
+header a:hover,
+header a:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+header a:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+header a:focus-visible {
+  outline: 3px solid var(--pow-red);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Main
+   ------------------------------------------------------------------ */
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md) var(--space-lg);
+}
+
+/* ---------------------------------------------------------------------
+   #cart-items — each line is a torn panel, gently rotated on
+   alternating rows for a scrapbook / comic-strip feel
+   ------------------------------------------------------------------ */
+
+#cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  counter-reset: cart-index;
+}
+
+/* empty-state note */
+#cart-items > p {
+  margin: 0;
+  padding: var(--space-md);
+  background: var(--panel);
+  border: 3px dashed var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.cart-item {
+  counter-increment: cart-index;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 1.4rem 1.25rem 1.1rem;
+  box-shadow: 6px 6px 0 var(--ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cart-item:nth-child(odd) {
+  transform: rotate(-0.6deg);
+}
+
+.cart-item:nth-child(even) {
+  transform: rotate(0.6deg);
+}
+
+.cart-item:hover {
+  transform: translateY(-3px) rotate(0deg);
+  box-shadow: 9px 9px 0 var(--ink);
+}
+
+/* panel number sticker, top-right corner */
+.cart-item::after {
+  content: "PANEL " counter(cart-index, decimal-leading-zero);
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background: var(--pop-blue);
+  color: #fff;
+  font-family: var(--font-label);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* cover thumbnail */
+.cart-item img {
+  flex-shrink: 0;
+  display: block;
+  width: 56px;
+  height: 76px;
+  object-fit: cover;
+  background: var(--paper);
+  color: transparent;
+  font-size: 0;
+  border: 3px solid var(--ink);
+  filter: contrast(1.05);
+}
+
+/* title / price / qty line */
+.cart-item p {
+  flex: 1 1 220px;
+  margin: 0.4rem 0 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+/* quantity stepper buttons (+ / -) */
+.cart-item button {
+  font-family: var(--font-label);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cart-item button:nth-of-type(1),
+.cart-item button:nth-of-type(2) {
+  width: 2.1rem;
+  height: 2.1rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 50%;
+  font-size: 1rem;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.cart-item button:nth-of-type(1):hover,
+.cart-item button:nth-of-type(2):hover,
+.cart-item button:nth-of-type(1):focus-visible,
+.cart-item button:nth-of-type(2):focus-visible {
+  background: var(--pop-blue);
+  color: #fff;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.cart-item span {
+  min-width: 1.6rem;
+  text-align: center;
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+/* Remove — bold red tag, same punch language as the primary buttons */
+.cart-item button:nth-of-type(3) {
+  margin-left: auto;
+  padding: 0.5rem 0.85rem;
+  background: var(--pow-red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.cart-item button:nth-of-type(3):hover,
+.cart-item button:nth-of-type(3):focus-visible {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.cart-item button:nth-of-type(3):active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.cart-item button:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   #cart-total — a bold call-out box, right aligned
+   ------------------------------------------------------------------ */
+
+#cart-total {
+  
+  margin: var(--space-lg) 0 0;
+  margin-left: auto;
+  padding: 0.7rem 1.2rem;
+  background: var(--burst-yellow);
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  text-align: right;
+  font-family: var(--font-label);
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  float :right;
+  clear: both;
+}
+
+/* ---------------------------------------------------------------------
+   Checkout — the big punch at the bottom of the page
+   ------------------------------------------------------------------ */
+
+main > button {
+  display: block;
+  clear: both;
+  width: 100%;
+  margin-top: var(--space-lg);
+  padding: 1.1rem;
+  background: var(--pow-red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+main > button::after {
+  content: "  \2192"; /* right arrow */
+}
+
+main > button:hover,
+main > button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+main > button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+main > button:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   #cart-alert — a caution panel, used for the "please log in"
+   markup checkout() injects
+   ------------------------------------------------------------------ */
+
+#cart-alert:not(:empty) {
+  clear: both;
+  margin-top: var(--space-sm);
+  padding: 1rem 1.1rem;
+  background: var(--panel);
+  border: 3px dashed var(--pow-red);
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+#cart-alert p {
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+#cart-alert a {
+  display: inline-block;
+  color: var(--pop-blue);
+  text-decoration: none;
+  border-bottom: 3px solid var(--ink);
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+#cart-alert a:hover,
+#cart-alert a:focus-visible {
+  color: var(--pow-red);
+  border-color: var(--pow-red);
+}
+
+#cart-alert a:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Toast
+   ------------------------------------------------------------------ */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--panel);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-left-width: 6px;
+  padding: 14px 20px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--ink);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+.toast.success {
+  border-left-color: var(--pop-blue);
+}
+
+.toast.error {
+  border-left-color: var(--pow-red);
+}
+
+.toast.success::before {
+  content: "\2713";
+  color: var(--pop-blue);
+  font-family: var(--font-body);
+}
+
+.toast.error::before {
+  content: "\2715";
+  color: var(--pow-red);
+  font-family: var(--font-body);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  header {
+    padding: var(--space-md) var(--space-md) var(--space-sm);
+  }
+
+  main {
+    padding: var(--space-md) var(--space-sm) var(--space-lg);
+  }
+
+  .cart-item {
+    padding: 1.6rem 1rem 1rem;
+    transform: none !important;
+  }
+
+  .cart-item:hover {
+    transform: translateY(-3px) !important;
+  }
+
+  .cart-item button:nth-of-type(3) {
+    margin-left: 0;
+  }
+
+  #cart-total {
+    float: none;
+    display: block;
+    text-align: center;
+    margin-left: 0;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Reduced motion
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+
+  .cart-item {
+    transform: none !important;
+  }
+}

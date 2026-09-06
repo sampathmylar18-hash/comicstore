@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <a href="index.html">Back to Store</a>
+
+  <h2>Add a Book</h2>
+  <form id="add-book-form">
+    <input type="text" id="title" placeholder="Title" required>
+    <input type="text" id="author" placeholder="Author" required>
+    <input type="number" id="price" placeholder="Price" step="0.01" required>
+    <input type="text" id="image" placeholder="Image URL">
+    <input type="number" id="stock" placeholder="Stock">
+    <input type="text" id="category" placeholder="Category">
+    <label>
+    <input type="checkbox" id="featured"> Featured
+    </label>
+    <textarea id="description" placeholder="Description"></textarea>
+     
+    <button type="submit">Add Book</button>
+  </form>
+
+  <h2>Manage Books</h2>
+  <div id="admin-book-list"></div>
+  <script src="js/utils.js"></script>
+  <script src="js/admin.js"></script>
+  
+</body>
+</html>

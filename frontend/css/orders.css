@@ -1,0 +1,768 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================================================================
+   INDEX — "The Newsstand"
+   Same comic-book / pop-art system as login/register/otp/cart: halftone
+   dot background, thick black panel borders, hard offset shadows,
+   Bangers display type, Archivo Black labels/buttons.
+
+   Real markup notes (from books.js):
+   <div class="book-card">
+     <a href="book.html?id=...">      → wraps the whole "face" of the card
+       <img>                          → cover
+       <h3>title</h3>
+       <p>author</p>                  → first <p>
+       <p>price</p>                   → second <p>
+     </a>
+     <button>Add to Cart</button>     → sibling AFTER the <a>, not inside it
+   ========================================================================= */
+
+:root {
+  --paper: #f7f1e3;
+  --panel: #ffffff;
+  --ink: #16151c;
+  --ink-soft: #5a5762;
+  --pow-red: #ef4136;
+  --pop-blue: #2455d9;
+  --burst-yellow: #ffce3d;
+
+  --font-display: "Bangers", cursive;
+  --font-label: "Archivo Black", sans-serif;
+  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 3.5rem;
+  --space-xl: 5rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* halftone / Ben-Day dot backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 1px, transparent 1.5px);
+  background-size: 10px 10px;
+  opacity: 0.06;
+}
+
+header,
+main {
+  position: relative;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------
+   Header — shout-line store title with a sticker tag, nav as a row
+   of bold comic tab-buttons
+   ------------------------------------------------------------------ */
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  padding: var(--space-xl) var(--space-lg) var(--space-md);
+  border-bottom: 3px solid var(--ink);
+}
+
+header h1 {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 3px 3px 0 var(--pow-red);
+}
+
+header h1::before {
+  content: "WELCOME, READER";
+  display: block;
+  background: var(--burst-yellow);
+  border: 2.5px solid var(--ink);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: none;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 var(--ink);
+  width: fit-content;
+  margin-bottom: 0.9rem;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+header nav a {
+  display: inline-block;
+  background: var(--panel);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  padding: 0.6rem 1.1rem;
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+header nav a:hover,
+header nav a:focus-visible {
+  transform: translate(-2px, -2px);
+  background: var(--pop-blue);
+  color: #fff;
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+header nav a:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+header nav a:focus-visible {
+  outline: 3px solid var(--pow-red);
+  outline-offset: 2px;
+}
+
+/* logout / admin links get a different accent so they read as
+   distinct actions once they're toggled visible by auth.js */
+header nav a#logout-link:hover,
+header nav a#logout-link:focus-visible {
+  background: var(--pow-red);
+}
+
+header nav a#admin-link:hover,
+header nav a#admin-link:focus-visible {
+  background: var(--burst-yellow);
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------------
+   Main / search
+   ------------------------------------------------------------------ */
+
+main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+#search-input {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: var(--space-lg);
+  padding: 0.9rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  outline: none;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#search-input::placeholder {
+  font-family: var(--font-label);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+#search-input:focus {
+  border-color: var(--pop-blue);
+  box-shadow: 5px 5px 0 var(--pop-blue);
+}
+
+#search-input:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   #book-list — the grid of panels
+   ------------------------------------------------------------------ */
+
+#book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--space-lg) var(--space-md);
+  counter-reset: book-index;
+}
+
+.book-card {
+  counter-increment: book-index;
+  position: relative;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 1.2rem 1.1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 6px 6px 0 var(--ink);
+  opacity: 0;
+  transform: translateY(14px);
+  animation: card-in 0.4s ease forwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#book-list .book-card:nth-child(1) { animation-delay: 0.03s; }
+#book-list .book-card:nth-child(2) { animation-delay: 0.06s; }
+#book-list .book-card:nth-child(3) { animation-delay: 0.09s; }
+#book-list .book-card:nth-child(4) { animation-delay: 0.12s; }
+#book-list .book-card:nth-child(5) { animation-delay: 0.15s; }
+#book-list .book-card:nth-child(6) { animation-delay: 0.18s; }
+#book-list .book-card:nth-child(7) { animation-delay: 0.21s; }
+#book-list .book-card:nth-child(8) { animation-delay: 0.24s; }
+#book-list .book-card:nth-child(n+9) { animation-delay: 0.27s; }
+
+@keyframes card-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 9px 9px 0 var(--ink);
+}
+
+/* panel number sticker, top-right corner */
+.book-card::after {
+  content: "PANEL " counter(book-index, decimal-leading-zero);
+  position: absolute;
+  top: -12px;
+  right: 14px;
+  background: var(--pop-blue);
+  color: #fff;
+  font-family: var(--font-label);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  z-index: 2;
+}
+
+/* the whole face of the card is a link */
+.book-card > a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.book-card img {
+  display: block;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: var(--paper);
+  color: transparent;
+  font-size: 0;
+  border: 3px solid var(--ink);
+}
+
+.book-card h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  margin: 0.2rem 0 0;
+  color: var(--ink);
+}
+
+/* first <p> = author byline */
+.book-card p:nth-of-type(1) {
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.book-card p:nth-of-type(1)::before {
+  content: "by ";
+  text-transform: none;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+/* second <p> = price, styled as a rotated comic burst badge */
+.book-card p:nth-of-type(2) {
+  align-self: flex-start;
+  margin: 0.3rem 0 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.6rem;
+  padding: 0.35rem 0.7rem;
+  background: var(--burst-yellow);
+  border: 2.5px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: rotate(-4deg);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+.book-card p:nth-of-type(2)::before {
+  content: "\20B9"; /* rupee sign */
+}
+
+/* Add to Cart — sibling of the <a>, big comic punch button */
+.book-card > button {
+  margin-top: 0.6rem;
+  padding: 0.75rem 1rem;
+  background: var(--pow-red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.book-card > button::after {
+  content: "  \2192"; /* arrow */
+}
+
+.book-card > button:hover,
+.book-card > button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.book-card > button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.book-card > button:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   #pagination
+   ------------------------------------------------------------------ */
+
+#pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: var(--space-lg);
+}
+
+#pagination button {
+  padding: 0.6rem 1.1rem;
+  background: var(--pop-blue);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#pagination button:hover,
+#pagination button:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+#pagination button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+#pagination button:disabled {
+  background: var(--ink-soft);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+#pagination button:focus-visible {
+  outline: 3px solid var(--pow-red);
+  outline-offset: 2px;
+}
+
+#pagination span {
+  font-family: var(--font-label);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 0.55rem 0.9rem;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* ---------------------------------------------------------------------
+   ORDERS PAGE
+   Used on orders.html, which links this same stylesheet. #orders-list
+   holds either the empty/login-prompt state, or a stack of .cart-item
+   order cards (one per past order) — note this is a different inner
+   structure than cart.html's own .cart-item, since these two pages
+   use separate stylesheets.
+   ------------------------------------------------------------------ */
+
+main > h2 {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 2rem;
+  line-height: 1;
+  text-shadow: 2px 2px 0 var(--pop-blue);
+}
+
+main > h2::before {
+  content: "READ ALL ABOUT IT";
+  display: block;
+  background: var(--burst-yellow);
+  border: 2.5px solid var(--ink);
+  padding: 0.28rem 0.6rem;
+  font-family: var(--font-label);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: none;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 var(--ink);
+  width: fit-content;
+  margin-bottom: 0.8rem;
+}
+
+#orders-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  counter-reset: order-index;
+}
+
+/* empty state ("You have no past orders.") and the not-logged-in
+   state (a lone <p> followed by a lone <a>, both direct children) */
+#orders-list > p {
+  margin: 0;
+  padding: 1.5rem;
+  width: 100%;
+  background: var(--panel);
+  border: 3px dashed var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#orders-list > a {
+  display: inline-block;
+  padding: 0.75rem 1.4rem;
+  background: var(--pow-red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#orders-list > a::after {
+  content: "  \2192"; /* arrow */
+}
+
+#orders-list > a:hover,
+#orders-list > a:focus-visible {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+#orders-list > a:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+#orders-list > a:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* each past order — a comic panel, numbered like the book grid but
+   with its own "ORDER 0X" sticker so it doesn't read as a book */
+#orders-list .cart-item {
+  counter-increment: order-index;
+  position: relative;
+  width: 100%;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 1.5rem 1.4rem 1.25rem;
+  box-shadow: 6px 6px 0 var(--ink);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#orders-list .cart-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 9px 9px 0 var(--ink);
+}
+
+#orders-list .cart-item::after {
+  content: "ORDER " counter(order-index, decimal-leading-zero);
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background: var(--pop-blue);
+  color: #fff;
+  font-family: var(--font-label);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  border: 2px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* "Order placed: <date>" line */
+#orders-list .cart-item p:first-of-type {
+  margin: 0 0 1rem;
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+#orders-list .cart-item p:first-of-type strong {
+  color: var(--ink);
+}
+
+/* each purchased item row: <div><img><span>...</span></div> */
+#orders-list .cart-item > div > div {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed var(--ink-soft);
+}
+
+#orders-list .cart-item > div > div:last-of-type {
+  border-bottom: none;
+}
+
+#orders-list .cart-item > div > div img {
+  flex-shrink: 0;
+  display: block;
+  width: 48px;
+  height: 66px;
+  object-fit: cover;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+}
+
+#orders-list .cart-item > div > div span {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+/* "Total: ₹X" line — the last <p>, styled as a bold call-out badge */
+#orders-list .cart-item p:last-of-type {
+  display: inline-block;
+  margin: 1.1rem 0 0;
+  padding: 0.45rem 0.9rem;
+  background: var(--burst-yellow);
+  border: 3px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  #orders-list .cart-item {
+    padding: 1.25rem 1rem 1rem;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Toast
+   ------------------------------------------------------------------ */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--panel);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-left-width: 6px;
+  padding: 14px 20px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--ink);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+.toast.success {
+  border-left-color: var(--pop-blue);
+}
+
+.toast.error {
+  border-left-color: var(--pow-red);
+}
+
+.toast.success::before {
+  content: "\2713";
+  color: var(--pop-blue);
+  font-family: var(--font-body);
+}
+
+.toast.error::before {
+  content: "\2715";
+  color: var(--pow-red);
+  font-family: var(--font-body);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------
+   Spinner (kept in case a loading state is added to #book-list later)
+   ------------------------------------------------------------------ */
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  grid-column: 1 / -1;
+  height: 40vh;
+}
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid var(--paper);
+  border-top: 4px solid var(--ink);
+  border-right: 4px solid var(--pow-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  header {
+    padding: var(--space-lg) var(--space-md) var(--space-md);
+    align-items: flex-start;
+  }
+
+  main {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  #book-list {
+    grid-template-columns: 1fr;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Reduced motion
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+
+  .book-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .book-card:hover {
+    transform: none;
+  }
+}

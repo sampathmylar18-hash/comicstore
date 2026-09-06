@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+/* =========================================================================
+   VERIFY OTP — "Panel Three"
+   Same comic-book / pop-art system as login/register. "Decoder Ring"
+   nods to the classic comic-book premium — used as the sticker tag,
+   fitting for a secret-code verification screen.
+   ========================================================================= */
+
+:root {
+  --paper: #f7f1e3;
+  --panel: #ffffff;
+  --ink: #16151c;
+  --ink-soft: #5a5762;
+  --pow-red: #ef4136;
+  --pop-blue: #2455d9;
+  --burst-yellow: #ffce3d;
+
+  --font-display: "Bangers", cursive;
+  --font-label: "Archivo Black", sans-serif;
+  --font-body: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* halftone / Ben-Day dot backdrop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--ink) 1px, transparent 1.5px);
+  background-size: 10px 10px;
+  opacity: 0.06;
+}
+
+/* ---------------------------------------------------------------------
+   .auth-container — the panel: thick border, hard offset shadow,
+   "PANEL 03" sticker in the corner
+   ------------------------------------------------------------------ */
+
+.auth-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  background: var(--panel);
+  border: 3px solid var(--ink);
+  padding: 2.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.auth-container::after {
+  content: "PANEL 02";
+  position: absolute;
+  top: -14px;
+  right: 20px;
+  background: var(--burst-yellow);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  border: 2px solid var(--ink);
+  transform: rotate(4deg);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+/* ---------------------------------------------------------------------
+   Heading + sticker tag
+   ------------------------------------------------------------------ */
+
+.auth-container h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 2.4rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: 3px 3px 0 var(--burst-yellow);
+  line-height: 1;
+}
+
+.auth-container h2::before {
+  content: "DECODER RING REQUIRED";
+  display: inline-block;
+  background: var(--burst-yellow);
+  border: 2.5px solid var(--ink);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--font-label);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-shadow: none;
+  transform: rotate(-3deg);
+  box-shadow: 3px 3px 0 var(--ink);
+  margin-bottom: 1rem;
+}
+
+/* instruction text with the email placeholder */
+.auth-container p {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.auth-container p #emailDisplay {
+  font-family: var(--font-label);
+  color: var(--ink);
+  font-weight: 400;
+}
+
+/* ---------------------------------------------------------------------
+   form — big bold OTP field, same button treatment as login/register
+   ------------------------------------------------------------------ */
+
+#verifyOtpForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+#verifyOtpForm input {
+  width: 100%;
+  padding: 0.9rem 0.5rem;
+  font-family: var(--font-label);
+  font-size: 1.5rem;
+  letter-spacing: 0.5em;
+  text-align: center;
+  color: var(--ink);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#verifyOtpForm input {
+  padding-left: 0.5em;
+}
+
+#verifyOtpForm input::placeholder {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+
+#verifyOtpForm input:hover {
+  background: #fffdf6;
+}
+
+#verifyOtpForm input:focus {
+  background: var(--panel);
+  border-color: var(--pop-blue);
+  box-shadow: 4px 4px 0 var(--pop-blue);
+}
+
+#verifyOtpForm input:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+#verifyOtpForm button {
+  margin-top: 0.5rem;
+  padding: 0.95rem 1rem;
+  background: var(--pow-red);
+  color: #fff;
+  border: 3px solid var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+#verifyOtpForm button::after {
+  content: "  \2192"; /* arrow */
+}
+
+#verifyOtpForm button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+
+#verifyOtpForm button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+#verifyOtpForm button:focus-visible {
+  outline: 3px solid var(--pop-blue);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------
+   Toast
+   ------------------------------------------------------------------ */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--panel);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  border-left-width: 6px;
+  padding: 14px 20px;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 5px 5px 0 var(--ink);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 100;
+}
+
+.toast.success {
+  border-left-color: var(--pop-blue);
+}
+
+.toast.error {
+  border-left-color: var(--pow-red);
+}
+
+.toast.success::before {
+  content: "\2713";
+  color: var(--pop-blue);
+  font-family: var(--font-body);
+}
+
+.toast.error::before {
+  content: "\2715";
+  color: var(--pow-red);
+  font-family: var(--font-body);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 420px) {
+  .auth-container {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+
+  .auth-container h2 {
+    font-size: 1.9rem;
+  }
+
+  #verifyOtpForm input {
+    letter-spacing: 0.35em;
+    font-size: 1.2rem;
+  }
+
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
